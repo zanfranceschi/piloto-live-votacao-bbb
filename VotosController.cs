@@ -22,14 +22,14 @@ namespace DesafioBbb
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Votos voto)
+        public IActionResult Post([FromBody] Voto voto)
         {
             var payload = JsonSerializer.Serialize(voto); // string
             var messageBody = Encoding.UTF8.GetBytes(payload); // array de bytes
 
             _channel.BasicPublish("votacao.bbb", "#", true, null, messageBody);
 
-            return Ok(new { mensagem = $"Voto recebido pra {voto.Nome} 👍" });
+            return Accepted(new { mensagem = $"Voto recebido pra {voto.Nome} 👍" });
         }
 
         public void Dispose()
@@ -38,7 +38,7 @@ namespace DesafioBbb
         }
     }
 
-    public class Votos
+    public class Voto
     {
         public string Nome { get; set; }
 
