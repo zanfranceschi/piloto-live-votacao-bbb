@@ -15,9 +15,11 @@ namespace DesafioBbb
         : ControllerBase, IDisposable
     {
         private IModel _channel;
+        private readonly ILogger<VotosController> _logger;
 
-        public VotosController(IConnection connection)
+        public VotosController(IConnection connection, ILogger<VotosController> logger)
         {
+            _logger = logger;
             _channel = connection.CreateModel();
         }
 
@@ -28,6 +30,8 @@ namespace DesafioBbb
             var messageBody = Encoding.UTF8.GetBytes(payload);
 
             _channel.BasicPublish("votacao.bbb", "voto", true, null, messageBody);
+            
+            _logger.LogDebug($"Mensagem publicada: {payload}");
 
             return Accepted(new { mensagem = $"Voto recebido pra {voto.Nome} 👍" });
         }
