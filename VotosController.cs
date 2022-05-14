@@ -27,7 +27,7 @@ namespace DesafioBbb
             var payload = JsonSerializer.Serialize(voto);
             var messageBody = Encoding.UTF8.GetBytes(payload);
 
-            _channel.BasicPublish("votacao.bbb", "#", true, null, messageBody);
+            _channel.BasicPublish("votacao.bbb", "voto", true, null, messageBody);
 
             return Accepted(new { mensagem = $"Voto recebido pra {voto.Nome} 👍" });
         }
